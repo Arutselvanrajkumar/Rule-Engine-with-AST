@@ -1,0 +1,25 @@
+// 1. Test creating individual rules
+Node rule1 = CreateRule("((age > 30 AND department = 'Sales') OR (age < 25 AND department = 'Marketing')) AND (salary > 50000 OR experience > 5)");
+
+// 2. Test combining rules
+Node combinedRule = CombineRules(new List<string> { rule1, rule2 });
+
+// 3. Test evaluating rules with sample data
+Dictionary<string, object> userData = new Dictionary<string, object>
+{
+    { "age", 35 },
+    { "department", "Sales" },
+    { "salary", 60000 },
+    { "experience", 3 }
+};
+bool result = EvaluateRule(combinedRule, userData); // should return true or false based on conditions
+
+// 4. Handle errors with invalid rules
+try
+{
+    Node invalidRule = CreateRule("invalid rule string");
+}
+catch (Exception e)
+{
+    Console.WriteLine(e.Message); // Expected: "Invalid rule format"
+}

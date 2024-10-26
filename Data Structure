@@ -1,0 +1,13 @@
+public class Node
+{
+    public string Type { get; set; } // "operator" or "operand"
+    public Node Left { get; set; }
+    public Node Right { get; set; }
+    public string Value { get; set; } // Holds operand values (age, department) or comparison values
+
+    public Node(string type, string value = null)
+    {
+        Type = type;
+        Value = value;
+    }
+}

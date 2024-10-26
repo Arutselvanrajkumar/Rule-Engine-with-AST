@@ -1,3 +1,4 @@
+//create_rule
 public Node CreateRule(string ruleString)
 {
     // Parse the rule string and create the AST
@@ -25,3 +26,67 @@ public Node CreateRule(string ruleString)
 
     return nodes.Pop();
 }
+//combine_rules
+public Node CreateRule(string ruleString)
+{
+    // Parse the rule string and create the AST
+    // This is a recursive parser function
+    // Example: (age > 30 AND department = 'Sales') becomes an AST with "AND" as the root
+    
+    // Simplified parser code (assumes well-formed input)
+    Stack<Node> nodes = new Stack<Node>();
+    string[] tokens = ruleString.Split(' ');
+
+    foreach (var token in tokens)
+    {
+        if (token == "AND" || token == "OR")
+        {
+            var right = nodes.Pop();
+            var left = nodes.Pop();
+            var operatorNode = new Node("operator", token) { Left = left, Right = right };
+            nodes.Push(operatorNode);
+        }
+        else if (IsCondition(token))
+        {
+            nodes.Push(new Node("operand", token));
+        }
+    }
+
+    return nodes.Pop();
+}
+//evaluate_rule
+public bool EvaluateRule(Node node, Dictionary<string, object> data)
+{
+    if (node.Type == "operand")
+    {
+        return EvaluateCondition(node.Value, data);
+    }
+
+    bool leftResult = EvaluateRule(node.Left, data);
+    bool rightResult = EvaluateRule(node.Right, data);
+
+    return node.Value == "AND" ? leftResult && rightResult : leftResult || rightResult;
+}
+
+private bool EvaluateCondition(string condition, Dictionary<string, object> data)
+{
+    // Basic evaluator for conditions (age > 30, department = 'Sales')
+    // Parse and compare values using data dictionary
+    // Example condition: "age > 30"
+
+    string[] parts = condition.Split(' ');
+    string attribute = parts[0];
+    string op = parts[1];
+    string value = parts[2];
+
+    if (data.ContainsKey(attribute))
+    {
+        var userValue = data[attribute];
+        // Basic comparison logic for ">", "<", "=" etc.
+        // Extend based on type of value (e.g., int, string)
+    }
+
+    return false;
+}
+
+
